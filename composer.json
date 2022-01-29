@@ -1,0 +1,23 @@
+{
+    "name": "gre/geoip-php",
+    "description": "Geolocation API providing acurrate data and fast responses.",
+    "keywords": ["api","ip","location","geoip"],
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "GRE Development Ltd.",
+            "email": "info@gredev.io",
+            "homepage": "https://gredev.io/en/",
+            "role": "Developer"
+        }
+    ],
+    "type": "project",
+    "require": {
+		"php": ">=8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "gre-dev\\GeoIP\\": "src/"
+        }
+    }
+}
