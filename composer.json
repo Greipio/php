@@ -20,5 +20,6 @@
         "psr-4": {
             "gre-dev\\GeoIP\\": "src/"
         }
-    }
+    },
+    "minimum-stability": "stable"
 }
