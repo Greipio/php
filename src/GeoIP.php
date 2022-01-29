@@ -9,13 +9,13 @@ use Exception;
  * For more information please check out https://geoip-docs.gredev.io
  * 
  * @package gre\geoip
- * @version 1.1.4
+ * @version 1.1.5
  * @author GRE Development Ltd. <info@gredev.io>
  * @copyright 2016-2022 GRE Development Ltd.
  * @license MIT
  */
 
-class Main extends Exception
+class GeoIP extends Exception
 {
 
    /**
