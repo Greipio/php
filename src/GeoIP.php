@@ -1,7 +1,5 @@
 <?php
-
-namespace GRE\GeoIP;
-
+namespace GRE;
 use Exception;
 
 /**
@@ -11,7 +9,7 @@ use Exception;
  * For more information please check out https://geoip-docs.gredev.io
  * 
  * @package gre\geoip
- * @version 1.1.0
+ * @version 1.1.1
  * @author GRE Development Ltd. <info@gredev.io>
  * @copyright 2016-2022 GRE Development Ltd.
  * @license MIT
