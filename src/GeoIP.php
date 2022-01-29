@@ -1,5 +1,5 @@
 <?php
-namespace GRE;
+namespace GRE\GeoIP;
 use Exception;
 
 /**
@@ -15,7 +15,7 @@ use Exception;
  * @license MIT
  */
 
-class GeoIP extends Exception
+class Main extends Exception
 {
 
    /**
