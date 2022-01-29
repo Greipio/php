@@ -17,7 +17,7 @@
     },
     "autoload": {
         "psr-4": {
-            "gre-dev\\GeoIP\\": "src/"
+            "GRE\\GeoIP\\": "src/"
         }
     },
     "minimum-stability": "stable"
