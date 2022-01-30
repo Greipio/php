@@ -33,14 +33,13 @@
 <br /><br />
 
 # Installation
-For Node.js, React.js & React Native:
 ```
 composer require gre/geoip
 ```
 <br /><br />
 
 # Usage
-Let's say that we want to get the visitor IP Address. So we do the following:
+Let's say that we want to get the information of a specific IP Address. So we do the following:
 <br /><br />
 
 ```php
