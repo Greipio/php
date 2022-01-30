@@ -2,7 +2,7 @@
     "name": "gre/geoip",
     "description": "Geolocation API providing acurrate data and fast responses.",
     "keywords": ["api","ip","location","geoip"],
-    "license": "Apache-2.0",
+    "license": "MIT",
     "authors": [
         {
             "name": "GRE Development Ltd.",
