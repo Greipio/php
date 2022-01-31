@@ -9,7 +9,7 @@ use Exception;
  * For more information please check out https://geoip-docs.gredev.io
  * 
  * @package gre\geoip
- * @version 1.1.5
+ * @version 1.1.7
  * @author GRE Development Ltd. <info@gredev.io>
  * @copyright 2016-2022 GRE Development Ltd.
  * @license MIT
@@ -29,6 +29,7 @@ class GeoIP extends Exception
    private $APIEndpoint = 'https://gregeoip.com/';
    private $AvailableGeoIPParams = ['security', 'timezone', 'currency', 'device'];
    private $AvailableCountryParams = ['language', 'flag', 'currency', 'timezone'];
+   private $AvailableLanguages = ['EN', 'AR', 'DE', 'FR', 'ES', 'JA', 'ZH', 'RU'];
    public $isError = false;
 
    /**
@@ -54,10 +55,11 @@ class GeoIP extends Exception
     * @param string $ip The IP Address you want to lookup
     * @param array $params You can pass the modules you want to fetch for that $ip. This array accepts `security`, `timezone`, `currency` and/or `device`.
     * @param string $lang Sets the output language. It can be `EN`, `AR`, `DE`, `FR`, `ES`, `JA`, `ZH` or `RU`.
+    * @param string $mode You pass `test` to this variable, so your account plan will not be affected while integrating the library and the API will return fake information for this case. You can set it to `live` again to back to the `production` mode. @see https://geoip-docs.gredev.io/sdks/php/country-method#options
     *
     * @return array The $ip information
     */
-   public function lookup($ip, $params = [], $lang = 'EN'): array
+   public function lookup($ip, $params = [], $lang = 'EN', $mode = 'live'): array
    {
       if (!empty($ip)) {
          $tempParams = '';
@@ -72,11 +74,23 @@ class GeoIP extends Exception
             }
          }
          if (!empty($tempParams)) $tempParams = substr($tempParams, 0, -1);
+
+         if (!in_array($lang, $this->AvailableLanguages)){
+            $this->isError = true;
+            throw new Exception('The language you specified ('.$lang.') is unknown.');
+         }
+
+         if ($mode !== 'live' && $mode !== 'test'){
+            $this->isError = true;
+            throw new Exception('The mode you specified ('.$mode.') is unknown. You should use `live` or `test`.');
+         }
+
          $localParams = array(
             'key' => $this->APIKey,
             'ip' => $ip,
             'lang' => $lang,
-            'params' => $tempParams
+            'params' => $tempParams,
+            'mode' => $mode
          );
          $ch = curl_init();
          curl_setopt($ch, CURLOPT_URL, $this->APIEndpoint . 'IPLookup?' . http_build_query($localParams));
@@ -102,10 +116,11 @@ class GeoIP extends Exception
     * @param string $countryCode The ISO 3166-1 alpha-2 code format of the country. [Learn More](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)
     * @param array $params You can pass the modules you want to fetch for that $ip. This array accepts `security`, `timezone`, `currency` and/or `device`.
     * @param string $lang Sets the output language. It can be `EN`, `AR`, `DE`, `FR`, `ES`, `JA`, `ZH` or `RU`.
+    * @param string $mode You pass `test` to this variable, so your account plan will not be affected while integrating the library and the API will return fake information for this case. You can set it to `live` again to back to the `production` mode. @see https://geoip-docs.gredev.io/sdks/php/country-method#options
     *
     * @return array The country information
     */
-   public function country($countryCode, $params = [], $lang = 'EN'): array
+   public function country($countryCode, $params = [], $lang = 'EN', $mode = 'live'): array
    {
       if (!empty($countryCode)) {
          $tempParams = '';
@@ -120,11 +135,23 @@ class GeoIP extends Exception
             }
          }
          if (!empty($tempParams)) $tempParams = substr($tempParams, 0, -1);
+
+         if (!in_array($lang, $this->AvailableLanguages)){
+            $this->isError = true;
+            throw new Exception('The language you specified ('.$lang.') is unknown.');
+         }
+
+         if ($mode !== 'live' && $mode !== 'test'){
+            $this->isError = true;
+            throw new Exception('The mode you specified ('.$mode.') is unknown. You should use `live` or `test`.');
+         }
+
          $localParams = array(
             'key' => $this->APIKey,
             'CountryCode' => $countryCode,
+            'params' => $tempParams,
             'lang' => $lang,
-            'params' => $tempParams
+            'mode' => $mode
          );
          $ch = curl_init();
          curl_setopt($ch, CURLOPT_URL, $this->APIEndpoint . 'Country?' . http_build_query($localParams));
