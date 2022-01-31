@@ -8,7 +8,7 @@
     <a href="https://geoip-docs.gredev.io/sdks/php" target="_BLANK">API Docs</a>
     <br />
     <br />
-    <a href="https://packagist.org/packages/gre/geoip" title="NPM Package" href="_BLANK"><img src="https://img.shields.io/badge/packagist-CB3837?style=for-the-badge&logo=packagist&logoColor=white&color=f28d1a"></a>
+    <a href="https://packagist.org/packages/gre/geoip" title="Packagist" href="_BLANK"><img src="https://img.shields.io/badge/packagist-CB3837?style=for-the-badge&logo=packagist&logoColor=white&color=f28d1a"></a>
     <img src="https://img.shields.io/badge/php-CB3837?style=for-the-badge&logo=php&logoColor=white&color=4F5B93" title="Javascript">
     <a href="https://github.com/gre-dev/GeoIP-PHP" title="Github Repo" href="_BLANK"><img src="https://img.shields.io/badge/GitHub-CB3837?style=for-the-badge&logo=github&logoColor=white&color=black"></a>
 </div>
