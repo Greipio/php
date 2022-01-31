@@ -90,7 +90,8 @@ class GeoIP extends Exception
             'ip' => $ip,
             'lang' => $lang,
             'params' => $tempParams,
-            'mode' => $mode
+            'mode' => $mode,
+            'source' => 'PHP-SDK'
          );
          $ch = curl_init();
          curl_setopt($ch, CURLOPT_URL, $this->APIEndpoint . 'IPLookup?' . http_build_query($localParams));
@@ -151,7 +152,8 @@ class GeoIP extends Exception
             'CountryCode' => $countryCode,
             'params' => $tempParams,
             'lang' => $lang,
-            'mode' => $mode
+            'mode' => $mode,
+            'source' => 'PHP-SDK'
          );
          $ch = curl_init();
          curl_setopt($ch, CURLOPT_URL, $this->APIEndpoint . 'Country?' . http_build_query($localParams));
