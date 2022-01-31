@@ -9,7 +9,7 @@ use Exception;
  * For more information please check out https://geoip-docs.gredev.io
  * 
  * @package gre\geoip
- * @version 1.1.7
+ * @version 1.1.8
  * @author GRE Development Ltd. <info@gredev.io>
  * @copyright 2016-2022 GRE Development Ltd.
  * @license MIT
