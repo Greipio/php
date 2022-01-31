@@ -1,6 +1,6 @@
 <div align="center">
-    <h1>GRE GeoIP for JS & Node.js</h1>
-    <p>The official JS library for GRE GeoIP API</p>
+    <h1>GRE GeoIP for PHP</h1>
+    <p>The official PHP library for GRE GeoIP API</p>
     <br />
     <a href="https://github.com/gre-dev/GeoIP-PHP/issues/new">Report Issue</a> · 
     <a href="https://github.com/gre-dev/GeoIP-PHP/discussions/new">Request Feature</a> · 
