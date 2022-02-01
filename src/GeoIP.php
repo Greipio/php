@@ -9,7 +9,7 @@ use Exception;
  * For more information please check out https://geoip-docs.gredev.io
  * 
  * @package gre\geoip
- * @version 1.1.8
+ * @version 1.1.9
  * @author GRE Development Ltd. <info@gredev.io>
  * @copyright 2016-2022 GRE Development Ltd.
  * @license MIT
@@ -27,7 +27,7 @@ class GeoIP extends Exception
     */
    private $APIKey = '';
    private $APIEndpoint = 'https://gregeoip.com/';
-   private $AvailableGeoIPParams = ['security', 'timezone', 'currency', 'device'];
+   private $AvailableGeoIPParams = ['location', 'security', 'timezone', 'currency', 'device'];
    private $AvailableCountryParams = ['language', 'flag', 'currency', 'timezone'];
    private $AvailableLanguages = ['EN', 'AR', 'DE', 'FR', 'ES', 'JA', 'ZH', 'RU'];
    public $isError = false;
