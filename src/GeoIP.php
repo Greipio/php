@@ -53,7 +53,7 @@ class GeoIP extends Exception
     * lookup method 
     *
     * @param string $ip The IP Address you want to lookup
-    * @param array $params You can pass the modules you want to fetch for that $ip. This array accepts `security`, `timezone`, `currency` and/or `device`.
+    * @param array $params You can pass the modules you want to fetch for that $ip. This array accepts `location`, `security`, `timezone`, `currency` and/or `device`.
     * @param string $lang Sets the output language. It can be `EN`, `AR`, `DE`, `FR`, `ES`, `JA`, `ZH` or `RU`.
     * @param string $mode You pass `test` to this variable, so your account plan will not be affected while integrating the library and the API will return fake information for this case. You can set it to `live` again to back to the `production` mode. @see https://geoip-docs.gredev.io/sdks/php/country-method#options
     *
@@ -115,7 +115,7 @@ class GeoIP extends Exception
     * country method 
     *
     * @param string $countryCode The ISO 3166-1 alpha-2 code format of the country. [Learn More](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)
-    * @param array $params You can pass the modules you want to fetch for that $ip. This array accepts `security`, `timezone`, `currency` and/or `device`.
+    * @param array $params You can pass the modules you want to fetch for that $ip. This array accepts `location`, `security`, `timezone`, `currency` and/or `device`.
     * @param string $lang Sets the output language. It can be `EN`, `AR`, `DE`, `FR`, `ES`, `JA`, `ZH` or `RU`.
     * @param string $mode You pass `test` to this variable, so your account plan will not be affected while integrating the library and the API will return fake information for this case. You can set it to `live` again to back to the `production` mode. @see https://geoip-docs.gredev.io/sdks/php/country-method#options
     *
