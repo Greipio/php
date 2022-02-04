@@ -11,6 +11,7 @@
     <a href="https://packagist.org/packages/gre/geoip" title="Packagist" href="_BLANK"><img src="https://img.shields.io/badge/packagist-CB3837?style=for-the-badge&logo=packagist&logoColor=white&color=f28d1a"></a>
     <img src="https://img.shields.io/badge/php-CB3837?style=for-the-badge&logo=php&logoColor=white&color=4F5B93" title="Javascript">
     <a href="https://github.com/gre-dev/GeoIP-PHP" title="Github Repo" href="_BLANK"><img src="https://img.shields.io/badge/GitHub-CB3837?style=for-the-badge&logo=github&logoColor=white&color=black"></a>
+    <a href="https://www.patreon.com/gredev" title="Patreon Profile - GRE Development Ltd." href="_BLANK"><img src="https://img.shields.io/badge/Patreon-ff424e?style=for-the-badge&logo=patreon&logoColor=white"></a>
 </div>
 <br />
 
