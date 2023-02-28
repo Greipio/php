@@ -7,14 +7,14 @@ namespace Composer\Autoload;
 class ComposerStaticInit8d94fc4f483c97dacd49e2989cec2913
 {
     public static $prefixLengthsPsr4 = array (
-        'g' => 
+        'G' => 
         array (
-            'gre-dev\\GeoIP\\' => 14,
+            'Greip\\API\\' => 10,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'gre-dev\\GeoIP\\' => 
+        'Greip\\API\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
         ),
@@ -22,6 +22,9 @@ class ComposerStaticInit8d94fc4f483c97dacd49e2989cec2913
 
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'Greip\\API\\Config' => __DIR__ . '/../..' . '/src/Config.php',
+        'Greip\\API\\Fraud' => __DIR__ . '/../..' . '/src/Fraud.php',
+        'Greip\\API\\GeoIP' => __DIR__ . '/../..' . '/src/GeoIP.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
