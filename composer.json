@@ -1,13 +1,21 @@
 {
     "name": "gre/geoip",
-    "description": "Geolocation API providing acurrate data and fast responses.",
-    "keywords": ["api","ip","location","geoip"],
+    "description": "Greip, protects your business from fraud and abuse by deploying AI-powered modules into your system.",
+    "keywords": [
+        "api",
+        "ip",
+        "location",
+        "fraud",
+        "abuse",
+        "profanity",
+        "geoip"
+    ],
     "license": "MIT",
     "authors": [
         {
-            "name": "GRE Development Ltd.",
-            "email": "info@gredev.io",
-            "homepage": "https://gredev.io/en/",
+            "name": "Greip",
+            "email": "info@greip.io",
+            "homepage": "https://greip.io/",
             "role": "Developer"
         }
     ],
@@ -17,7 +25,7 @@
     },
     "autoload": {
         "psr-4": {
-            "GRE\\GeoIP\\": "src/"
+            "Greip\\": "src/"
         }
     },
     "minimum-stability": "stable"
