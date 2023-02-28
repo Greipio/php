@@ -48,8 +48,8 @@ Here's how you use the API Methods:
 include_once './vendor/autoload.php';
 
 // Declaring the classes we need
-$Config = new Greip\Config();
-$GeoIP = new Greip\GeoIP();
+$Config = new Greip\API\Config();
+$GeoIP = new Greip\API\GeoIP();
 
 // Setting the API Key
 $Config->setKey('<API-Key>');
@@ -66,8 +66,8 @@ print_r($GeoIP_Response);
 include_once './vendor/autoload.php';
 
 // Declaring the classes we need
-$Config = new Greip\Config();
-$GeoIP = new Greip\GeoIP();
+$Config = new Greip\API\Config();
+$GeoIP = new Greip\API\GeoIP();
 
 // Setting the API Key
 $Config->setKey('<API-Key>');
@@ -84,8 +84,8 @@ print_r($ASN_Response);
 include_once './vendor/autoload.php';
 
 // Declaring the classes we need
-$Config = new Greip\Config();
-$GeoIP = new Greip\GeoIP();
+$Config = new Greip\API\Config();
+$GeoIP = new Greip\API\GeoIP();
 
 // Setting the API Key
 $Config->setKey('<API-Key>');
@@ -102,8 +102,8 @@ print_r($Country_Response);
 include_once './vendor/autoload.php';
 
 // Declaring the classes we need
-$Config = new Greip\Config();
-$Fraud = new Greip\Fraud();
+$Config = new Greip\API\Config();
+$Fraud = new Greip\API\Fraud();
 
 // Setting the API Key
 $Config->setKey('<API-Key>');
@@ -120,8 +120,8 @@ print_r($Email_Response);
 include_once './vendor/autoload.php';
 
 // Declaring the classes we need
-$Config = new Greip\Config();
-$Fraud = new Greip\Fraud();
+$Config = new Greip\API\Config();
+$Fraud = new Greip\API\Fraud();
 
 // Setting the API Key
 $Config->setKey('<API-Key>');
@@ -138,8 +138,8 @@ print_r($Phone_Response);
 include_once './vendor/autoload.php';
 
 // Declaring the classes we need
-$Config = new Greip\Config();
-$Fraud = new Greip\Fraud();
+$Config = new Greip\API\Config();
+$Fraud = new Greip\API\Fraud();
 
 // Setting the API Key
 $Config->setKey('<API-Key>');
@@ -156,8 +156,8 @@ print_r($Profanity_Response);
 include_once './vendor/autoload.php';
 
 // Declaring the classes we need
-$Config = new Greip\Config();
-$Fraud = new Greip\Fraud();
+$Config = new Greip\API\Config();
+$Fraud = new Greip\API\Fraud();
 
 // Setting the API Key
 $Config->setKey('<API-Key>');
