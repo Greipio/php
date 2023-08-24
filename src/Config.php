@@ -4,10 +4,10 @@ namespace Greip\API;
 
 class Config
 {
-    public static $APIKey = '';
+    public static $APIKey = "";
 
     /**
-     * setKey method 
+     * setKey method
      *
      * @param string $key Pass you API Key as a string here. You can also store it in a .env file and pass a variable that returns the API Key as a string.
      *
