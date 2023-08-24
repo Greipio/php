@@ -16,6 +16,7 @@
 <br />
 
 ---
+
 <br />
 
 ![Packagist Version](https://img.shields.io/packagist/v/gre/geoip?color=brightgreen&label=Stable&logo=packagist&logoColor=white)
@@ -30,151 +31,168 @@
 <br /><br />
 
 # Requirements
-* php: >=7.4
-<br /><br />
+
+- php: >=7.4
+  <br /><br />
 
 # Installation
+
 ```
 composer require gre/geoip
 ```
+
 <br />
 
 # Usage
+
 Here's how you use the API Methods:
 <br /><br />
 
 ## 1. IP Geolocation
+
 ```php
-include_once './vendor/autoload.php';
+include_once "./vendor/autoload.php";
 
 // Declaring the classes we need
 $Config = new Greip\API\Config();
 $GeoIP = new Greip\API\GeoIP();
 
 // Setting the API Key
-$Config->setKey('<API-Key>');
+$Config->setKey("<API-Key>");
 
 // Sending the request and storing the output in a variable
-$GeoIP_Response = $GeoIP->lookup('1.1.1.1');
+$GeoIP_Response = $GeoIP->lookup("1.1.1.1");
 // Printing the response
 print_r($GeoIP_Response);
 ```
+
 <br />
 
 ## 2. ASN Lookup
+
 ```php
-include_once './vendor/autoload.php';
+include_once "./vendor/autoload.php";
 
 // Declaring the classes we need
 $Config = new Greip\API\Config();
 $GeoIP = new Greip\API\GeoIP();
 
 // Setting the API Key
-$Config->setKey('<API-Key>');
+$Config->setKey("<API-Key>");
 
 // Sending the request and storing the output in a variable
-$ASN_Response = $GeoIP->asn('AS01');
+$ASN_Response = $GeoIP->asn("AS01");
 // Printing the response
 print_r($ASN_Response);
 ```
+
 <br />
 
 ## 3. Country Lookup
+
 ```php
-include_once './vendor/autoload.php';
+include_once "./vendor/autoload.php";
 
 // Declaring the classes we need
 $Config = new Greip\API\Config();
 $GeoIP = new Greip\API\GeoIP();
 
 // Setting the API Key
-$Config->setKey('<API-Key>');
+$Config->setKey("<API-Key>");
 
 // Sending the request and storing the output in a variable
-$Country_Response = $GeoIP->country('US', ['language', 'timezone', 'currency']);
+$Country_Response = $GeoIP->country("US", ["language", "timezone", "currency"]);
 // Printing the response
 print_r($Country_Response);
 ```
+
 <br />
 
 ## 4. Email Validation
+
 ```php
-include_once './vendor/autoload.php';
+include_once "./vendor/autoload.php";
 
 // Declaring the classes we need
 $Config = new Greip\API\Config();
 $Fraud = new Greip\API\Fraud();
 
 // Setting the API Key
-$Config->setKey('<API-Key>');
+$Config->setKey("<API-Key>");
 
 // Sending the request and storing the output in a variable
-$Email_Response = $Fraud->email('example@domain.com');
+$Email_Response = $Fraud->email("example@domain.com");
 // Printing the response
 print_r($Email_Response);
 ```
+
 <br />
 
 ## 5. Phone Validation
+
 ```php
-include_once './vendor/autoload.php';
+include_once "./vendor/autoload.php";
 
 // Declaring the classes we need
 $Config = new Greip\API\Config();
 $Fraud = new Greip\API\Fraud();
 
 // Setting the API Key
-$Config->setKey('<API-Key>');
+$Config->setKey("<API-Key>");
 
 // Sending the request and storing the output in a variable
-$Phone_Response = $Fraud->phone('000000000', 'US');
+$Phone_Response = $Fraud->phone("000000000", "US");
 // Printing the response
 print_r($Phone_Response);
 ```
+
 <br />
 
 ## 6. Profanity Detection
+
 ```php
-include_once './vendor/autoload.php';
+include_once "./vendor/autoload.php";
 
 // Declaring the classes we need
 $Config = new Greip\API\Config();
 $Fraud = new Greip\API\Fraud();
 
 // Setting the API Key
-$Config->setKey('<API-Key>');
+$Config->setKey("<API-Key>");
 
 // Sending the request and storing the output in a variable
-$Profanity_Response = $Fraud->profanity('This is a sample text', true, false);
+$Profanity_Response = $Fraud->profanity("This is a sample text", true, false);
 // Printing the response
 print_r($Profanity_Response);
 ```
+
 <br />
 
 ## 7. Payment Fraud Prevention
+
 ```php
-include_once './vendor/autoload.php';
+include_once "./vendor/autoload.php";
 
 // Declaring the classes we need
 $Config = new Greip\API\Config();
 $Fraud = new Greip\API\Fraud();
 
 // Setting the API Key
-$Config->setKey('<API-Key>');
+$Config->setKey("<API-Key>");
 
 // Declaring Transaction Data
 $data = [
-    'action' => 'purchase',
-    'website_domain' => 'example.com',
-    'merchant_id' => 21,
-    'customer_id' => 1,
-    'customer_ip' => '1.0.0.2',
-    'customer_email' => 'asdfasdf@gmasail.com',
-    'customer_phone' => '32423434',
-    'customer_country' => 'US',
-    'transaction_amount' => 100000,
-    'transaction_currency' => 'USD',
-    'customer_useragent' => 'Mozill almaden sdfwer',
+  "action" => "purchase",
+  "website_domain" => "example.com",
+  "merchant_id" => 21,
+  "customer_id" => 1,
+  "customer_ip" => "1.0.0.2",
+  "customer_email" => "asdfasdf@gmasail.com",
+  "customer_phone" => "32423434",
+  "customer_country" => "US",
+  "transaction_amount" => 100000,
+  "transaction_currency" => "USD",
+  "customer_useragent" => "Mozill almaden sdfwer",
 ];
 
 // Sending the request and storing the output in a variable
@@ -185,15 +203,38 @@ print_r($Payment_Response);
 
 <br />
 
+## 8. IBAN Validation
+
+```php
+include_once "./vendor/autoload.php";
+
+// Declaring the classes we need
+$Config = new Greip\API\Config();
+$Fraud = new Greip\API\Fraud();
+
+// Setting the API Key
+$Config->setKey("<API-Key>");
+
+// Sending the request and storing the output in a variable
+$IBAN_Response = $Fraud->iban("FO9264600123456789");
+// Printing the response
+print_r($IBAN_Response);
+```
+
+<br />
+
 # Options, Methods and More
+
 You can find the full guide of this package by visiting our [Documentation Page](https://docs.greip.io/).
 
 <br />
 
 # Credits
-* [Greip Team](https://greip.io/)
-* [All Contributors](https://github.com/Greipio/Greip-PHP/graphs/contributors)
-<br /><br />
+
+- [Greip Team](https://greip.io/)
+- [All Contributors](https://github.com/Greipio/Greip-PHP/graphs/contributors)
+  <br /><br />
 
 # License
+
 The MIT License (MIT). Please read the [License](https://github.com/Greipio/Greip-PHP/blob/master/LICENSE) file for more information.
