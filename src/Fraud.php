@@ -3,6 +3,7 @@
 namespace Greip\API;
 
 use Exception;
+use Greip\API\Enums\Mode;
 
 /**
  * Fraud Class
@@ -13,35 +14,17 @@ use Exception;
  * @package gre\geoip
  * @version 2.0
  * @author Greip <info@greip.io>
- * @copyright 2016-2023 Greip
+ * @copyright 2016-2024 Greip
  * @license MIT
  */
 
 class Fraud extends Exception
 {
     /**
-     * @var string $APIEndpoint The GRE GeoIP endpoint.
-     * @var array $AvailableGeoIPParams List of the params available to use in both GeoIP & Lookup modules of the API.
-     * @var array $AvailableCountryParams List of the params available to use in the Country module of the API.
+     * @var string $BaseURL Greip's base URL.
      * @var string $isError Can be used AFTER MAKING A REQUEST to determine if the API returned an error.
      */
-    private $APIEndpoint = "https://gregeoip.com/";
-    private $AvailableCountryParams = [
-        "language",
-        "flag",
-        "currency",
-        "timezone",
-    ];
-    private $AvailableLanguages = [
-        "EN",
-        "AR",
-        "DE",
-        "FR",
-        "ES",
-        "JA",
-        "ZH",
-        "RU",
-    ];
+    private $BaseURL = "https://gregeoip.com/";
     public $isError = false;
 
     /**
@@ -50,26 +33,28 @@ class Fraud extends Exception
      * @param string $email The email addresss you want to validate.
      * @param string $userID The User Identifier [Learn More](https://docs.greip.io/options/user-identifier).
      * @param string $mode You pass `test` to this variable, so your account plan will not be affected while integrating the library and the API will return fake information for this case. You can set it to `live` again to back to the `production` mode.
-     * @see https://docs.greip.io/methods/data-validation/email-validation
+     * @see https://docs.greip.io/api-reference/endpoint/data-validation/email-lookup
      *
      * @return array
      */
-    public function email($email, $userID = "", $mode = "live"): array|null
-    {
+    public function email(
+        $email,
+        $userID = null,
+        $mode = Mode::LIVE
+    ): array|null {
+        $email = strtolower($email);
+        $mode = strtolower($mode);
+
         $configClass = new Config();
 
         if (!empty($email)) {
-            if ($mode !== "live" && $mode !== "test") {
-                $this->isError = true;
+            if (!in_array($mode, Mode::values())) {
                 throw new Exception(
-                    "The mode you specified (" .
-                        $mode .
-                        ") is unknown. You should use `live` or `test`."
+                    "The mode you specified ($mode) is unknown. You should use `live` or `test`."
                 );
             }
 
             $localParams = [
-                "key" => $configClass->getKey(),
                 "email" => $email,
                 "userID" => $userID,
                 "mode" => $mode,
@@ -79,11 +64,16 @@ class Fraud extends Exception
             curl_setopt(
                 $ch,
                 CURLOPT_URL,
-                $this->APIEndpoint .
-                    "validateEmail?" .
+                $this->BaseURL .
+                    "/validateEmail?" .
                     http_build_query($localParams)
             );
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                "Content-Type: application/json",
+                "Accept: application/json",
+                "Authorization: Bearer " . $configClass->getToken(),
+            ]);
             $APIResponse = curl_exec($ch);
             curl_close($ch);
             $decodedResponse = json_decode($APIResponse, true);
@@ -98,7 +88,6 @@ class Fraud extends Exception
 
             return $decodedResponse;
         } else {
-            $this->isError = true;
             throw new Exception(
                 'The $phone parameter is required. You passed an empty value.'
             );
@@ -112,30 +101,30 @@ class Fraud extends Exception
      * @param string $countryCode The ISO 3166-1 alpha-2 code format of the user. [Learn More](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)
      * @param string $userID The User Identifier [Learn More](https://docs.greip.io/options/user-identifier).
      * @param string $mode You pass `test` to this variable, so your account plan will not be affected while integrating the library and the API will return fake information for this case. You can set it to `live` again to back to the `production` mode.
-     * @see https://docs.greip.io/methods/data-validation/phone-number-validation
+     * @see https://docs.greip.io/api-reference/endpoint/data-validation/phone-lookup
      *
      * @return array
      */
     public function phone(
         $phone,
         $countryCode,
-        $userID = "",
-        $mode = "live"
+        $userID = null,
+        $mode = Mode::LIVE
     ): array|null {
+        $phone = strtolower($phone);
+        $countryCode = strtoupper($countryCode);
+        $mode = strtolower($mode);
+
         $configClass = new Config();
 
         if (!empty($phone) && !empty($countryCode)) {
-            if ($mode !== "live" && $mode !== "test") {
-                $this->isError = true;
+            if (!in_array($mode, Mode::values())) {
                 throw new Exception(
-                    "The mode you specified (" .
-                        $mode .
-                        ") is unknown. You should use `live` or `test`."
+                    "The mode you specified ($mode) is unknown. You should use `live` or `test`."
                 );
             }
 
             $localParams = [
-                "key" => $configClass->getKey(),
                 "phone" => $phone,
                 "countryCode" => $countryCode,
                 "userID" => $userID,
@@ -146,11 +135,16 @@ class Fraud extends Exception
             curl_setopt(
                 $ch,
                 CURLOPT_URL,
-                $this->APIEndpoint .
-                    "validatePhone?" .
+                $this->BaseURL .
+                    "/validatePhone?" .
                     http_build_query($localParams)
             );
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                "Content-Type: application/json",
+                "Accept: application/json",
+                "Authorization: Bearer " . $configClass->getToken(),
+            ]);
             $APIResponse = curl_exec($ch);
             curl_close($ch);
             $decodedResponse = json_decode($APIResponse, true);
@@ -165,7 +159,6 @@ class Fraud extends Exception
 
             return $decodedResponse;
         } else {
-            $this->isError = true;
             throw new Exception(
                 'The $phone/$countryCode parameter is required. You passed an empty value.'
             );
@@ -173,29 +166,30 @@ class Fraud extends Exception
     }
 
     /**
-     * Phone Validation Method
+     * IBAN Validation Method
      *
      * @param string $iban The IBAN you want to validate.
      * @param string $userID The User Identifier [Learn More](https://docs.greip.io/options/user-identifier).
      * @param string $mode You pass `test` to this variable, so your account plan will not be affected while integrating the library and the API will return fake information for this case. You can set it to `live` again to back to the `production` mode.
-     * @see https://docs.greip.io/methods/data-validation/phone-number-validation
+     * @see https://docs.greip.io/api-reference/endpoint/payment-fraud/iban-validation
      *
      * @return array
      */
-    public function iban($iban, $userID = "", $mode = "live"): array|null
+    public function iban($iban, $userID = null, $mode = Mode::LIVE): array|null
     {
+        $iban = strtoupper($iban);
+        $mode = strtolower($mode);
+
         $configClass = new Config();
 
         if (!empty($iban)) {
-            if ($mode !== "live" && $mode !== "test") {
-                $this->isError = true;
+            if (!in_array($mode, Mode::values())) {
                 throw new Exception(
                     "The mode you specified ($mode) is unknown. You should use `live` or `test`."
                 );
             }
 
             $localParams = [
-                "key" => $configClass->getKey(),
                 "iban" => $iban,
                 "userID" => $userID,
                 "mode" => $mode,
@@ -205,11 +199,16 @@ class Fraud extends Exception
             curl_setopt(
                 $ch,
                 CURLOPT_URL,
-                $this->APIEndpoint .
-                    "validateIBAN?" .
+                $this->BaseURL .
+                    "/validateIBAN?" .
                     http_build_query($localParams)
             );
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                "Content-Type: application/json",
+                "Accept: application/json",
+                "Authorization: Bearer " . $configClass->getToken(),
+            ]);
             $APIResponse = curl_exec($ch);
             curl_close($ch);
             $decodedResponse = json_decode($APIResponse, true);
@@ -224,7 +223,6 @@ class Fraud extends Exception
 
             return $decodedResponse;
         } else {
-            $this->isError = true;
             throw new Exception(
                 'The `$iban` parameter is required. You passed an empty value.'
             );
@@ -239,7 +237,7 @@ class Fraud extends Exception
      * @param string $scoreOnly Returns only the score of the text and whether it's safe or not.
      * @param string $userID The User Identifier [Learn More](https://docs.greip.io/options/user-identifier).
      * @param string $mode You pass `test` to this variable, so your account plan will not be affected while integrating the library and the API will return fake information for this case. You can set it to `live` again to back to the `production` mode.
-     * @see https://docs.greip.io/methods/profanity-detection-api
+     * @see https://docs.greip.io/api-reference/endpoint/other-services/profanity-detection
      *
      * @return array
      */
@@ -247,18 +245,17 @@ class Fraud extends Exception
         $text,
         $listBadWords = false,
         $scoreOnly = false,
-        $userID = "",
-        $mode = "live"
+        $userID = null,
+        $mode = Mode::LIVE
     ): array|null {
+        $mode = strtolower($mode);
+
         $configClass = new Config();
 
         if (!empty($text)) {
-            if ($mode !== "live" && $mode !== "test") {
-                $this->isError = true;
+            if (!in_array($mode, Mode::values())) {
                 throw new Exception(
-                    "The mode you specified (" .
-                        $mode .
-                        ") is unknown. You should use `live` or `test`."
+                    "The mode you specified ($mode) is unknown. You should use `live` or `test`."
                 );
             }
 
@@ -270,7 +267,6 @@ class Fraud extends Exception
             }
 
             $localParams = [
-                "key" => $configClass->getKey(),
                 "text" => $text,
                 "listBadWords" => $listBadWords ? "yes" : "no",
                 "scoreOnly" => $scoreOnly ? "yes" : "no",
@@ -282,11 +278,14 @@ class Fraud extends Exception
             curl_setopt(
                 $ch,
                 CURLOPT_URL,
-                $this->APIEndpoint .
-                    "badWords?" .
-                    http_build_query($localParams)
+                $this->BaseURL . "/badWords?" . http_build_query($localParams)
             );
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                "Content-Type: application/json",
+                "Accept: application/json",
+                "Authorization: Bearer " . $configClass->getToken(),
+            ]);
             $APIResponse = curl_exec($ch);
             curl_close($ch);
             $decodedResponse = json_decode($APIResponse, true);
@@ -301,7 +300,6 @@ class Fraud extends Exception
 
             return $decodedResponse;
         } else {
-            $this->isError = true;
             throw new Exception(
                 'The $text parameter is required. You passed an empty value.'
             );
@@ -313,32 +311,30 @@ class Fraud extends Exception
      *
      * @param array $data The infomation of the transaction.
      * @param string $mode You pass `test` to this variable, so your account plan will not be affected while integrating the library and the API will return fake information for this case. You can set it to `live` again to back to the `production` mode.
-     * @see https://docs.greip.io/methods/payment-fraud-prevention
+     * @see https://docs.greip.io/api-reference/endpoint/payment-fraud/payment-fraud-prevention
      *
      * @return array
      */
-    public function payment($data, $mode = "live"): array|null
+    public function payment($data, $mode = Mode::LIVE): array|null
     {
+        $mode = strtolower($mode);
+
         $configClass = new Config();
 
         if (!empty($data)) {
-            if ($mode !== "live" && $mode !== "test") {
-                $this->isError = true;
+            if (!in_array($mode, Mode::values())) {
                 throw new Exception(
-                    "The mode you specified (" .
-                        $mode .
-                        ") is unknown. You should use `live` or `test`."
+                    "The mode you specified ($mode) is unknown. You should use `live` or `test`."
                 );
             }
 
             $localParams = [
-                "key" => $configClass->getKey(),
                 "mode" => $mode,
                 "source" => "PHP-SDK",
                 "data" => $data,
             ];
             $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $this->APIEndpoint . "paymentFraud");
+            curl_setopt($ch, CURLOPT_URL, $this->BaseURL . "/paymentFraud");
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
             curl_setopt(
@@ -346,6 +342,11 @@ class Fraud extends Exception
                 CURLOPT_POSTFIELDS,
                 json_encode($localParams, true)
             );
+            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                "Content-Type: application/json",
+                "Accept: application/json",
+                "Authorization: Bearer " . $configClass->getToken(),
+            ]);
             $APIResponse = curl_exec($ch);
             curl_close($ch);
             $decodedResponse = json_decode($APIResponse, true);
@@ -360,7 +361,6 @@ class Fraud extends Exception
 
             return $decodedResponse;
         } else {
-            $this->isError = true;
             throw new Exception(
                 'The $data parameter is required. You passed an empty value.'
             );

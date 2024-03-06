@@ -4,16 +4,16 @@ namespace Greip\API;
 
 class Config
 {
-    public static $APIKey = "";
+    public static $APIKey = null;
 
     /**
-     * setKey method
+     * Set the API Key
      *
-     * @param string $key Pass you API Key as a string here. You can also store it in a .env file and pass a variable that returns the API Key as a string.
+     * @param string $key The API Key
      *
      * @return bool
      */
-    public function setKey($key): bool
+    public function setToken($key): bool
     {
         if (!empty($key)) {
             self::$APIKey = $key;
@@ -23,7 +23,24 @@ class Config
         }
     }
 
-    public function getKey(): string
+    /**
+     * Set the API Key
+     *
+     * @param string $key The API Key
+     *
+     * @return bool
+     */
+    public function setKey($key): bool
+    {
+        return self::setToken($key);
+    }
+
+    /**
+     * Get the API Key
+     *
+     * @return string
+     */
+    public function getToken(): string
     {
         return self::$APIKey;
     }

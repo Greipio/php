@@ -1,32 +1,38 @@
 {
-    "name": "greip/api",
-    "description": "Greip, protects your business from fraud and abuse by deploying AI-powered modules into your system.",
-    "keywords": [
-        "api",
-        "ip",
-        "location",
-        "fraud",
-        "abuse",
-        "profanity",
-        "geoip"
-    ],
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Greip",
-            "email": "info@greip.io",
-            "homepage": "https://greip.io/",
-            "role": "Developer"
-        }
-    ],
-    "type": "library",
-    "require": {
-        "php": ">=7.4"
-    },
-    "autoload": {
-        "psr-4": {
-            "Greip\\API\\": "src/"
-        }
-    },
-    "minimum-stability": "stable"
+  "name": "greip/api",
+  "description": "Greip, protects your business from fraud and abuse by deploying AI-powered modules into your system.",
+  "keywords": [
+    "api",
+    "ip",
+    "location",
+    "fraud",
+    "abuse",
+    "profanity",
+    "geoip",
+    "bin lookup",
+    "email verification",
+    "phone verification",
+    "ip reputation",
+    "ip intelligence",
+    "iban validation"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Greip",
+      "email": "info@greip.io",
+      "homepage": "https://greip.io/",
+      "role": "Developer"
+    }
+  ],
+  "type": "library",
+  "require": {
+    "php": ">=7.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "Greip\\API\\": "src/"
+    }
+  },
+  "minimum-stability": "stable"
 }

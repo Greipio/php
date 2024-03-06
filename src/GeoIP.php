@@ -3,6 +3,9 @@
 namespace Greip\API;
 
 use Exception;
+use Greip\API\Enums\Language;
+use Greip\API\Enums\Mode;
+use Greip\API\Enums\Param;
 
 /**
  * GeoIP Class
@@ -13,42 +16,17 @@ use Exception;
  * @package gre\geoip
  * @version 2.0
  * @author Greip <info@greip.io>
- * @copyright 2016-2023 Greip
+ * @copyright 2016-2024 Greip
  * @license MIT
  */
 
 class GeoIP extends Exception
 {
     /**
-     * @var string $APIEndpoint The GRE GeoIP endpoint.
-     * @var array $AvailableGeoIPParams List of the params available to use in both GeoIP & Lookup modules of the API.
-     * @var array $AvailableCountryParams List of the params available to use in the Country module of the API.
+     * @var string $BaseURL Greip's base URL.
      * @var string $isError Can be used AFTER MAKING A REQUEST to determine if the API returned an error.
      */
-    private $APIEndpoint = "https://gregeoip.com/";
-    private $AvailableGeoIPParams = [
-        "location",
-        "security",
-        "timezone",
-        "currency",
-        "device",
-    ];
-    private $AvailableCountryParams = [
-        "language",
-        "flag",
-        "currency",
-        "timezone",
-    ];
-    private $AvailableLanguages = [
-        "EN",
-        "AR",
-        "DE",
-        "FR",
-        "ES",
-        "JA",
-        "ZH",
-        "RU",
-    ];
+    private $BaseURL = "https://gregeoip.com/";
     public $isError = false;
 
     /**
@@ -58,56 +36,53 @@ class GeoIP extends Exception
      * @param array $params You can pass the modules you want to fetch for that $ip. This array accepts `location`, `security`, `timezone`, `currency` and/or `device`.
      * @param string $lang Sets the output language. It can be `EN`, `AR`, `DE`, `FR`, `ES`, `JA`, `ZH` or `RU`.
      * @param string $mode You pass `test` to this variable, so your account plan will not be affected while integrating the library and the API will return fake information for this case. You can set it to `live` again to back to the `production` mode.
-     * @see https://docs.greip.io/methods/lookup-ip-address
+     * @see https://docs.greip.io/api-reference/endpoint/ip-geolocation/ip-lookup
      *
      * @return array The $ip information
      */
     public function lookup(
         $ip,
         $params = [],
-        $lang = "EN",
-        $mode = "live"
+        $lang = Language::EN,
+        $mode = Mode::LIVE
     ): array {
+        $ip = strtoupper($ip);
+        $lang = strtoupper($lang);
+        $mode = strtolower($mode);
+
         $configClass = new Config();
 
         if (!empty($ip)) {
-            $tempParams = "";
+            $tempParams = [];
             foreach ($params as $perParam) {
                 if (!empty($perParam)) {
-                    if (!in_array($perParam, $this->AvailableGeoIPParams)) {
+                    if (!in_array($perParam, Param::values())) {
                         $this->isError = true;
                         throw new Exception(
-                            'The $params variable is not valid. You passed `' .
-                                $perParam .
-                                "` which is unknown."
+                            "The `$perParam` param is not valid for the `\$params` argument."
                         );
                     } else {
-                        $tempParams .= $perParam . ",";
+                        array_push($tempParams, $perParam);
                     }
                 }
             }
-            if (!empty($tempParams)) {
-                $tempParams = substr($tempParams, 0, -1);
-            }
+            $tempParams = implode(",", $tempParams);
 
-            if (!in_array($lang, $this->AvailableLanguages)) {
+            if (!in_array($lang, Language::values())) {
                 $this->isError = true;
                 throw new Exception(
-                    "The language you specified (" . $lang . ") is unknown."
+                    "The language you specified ($lang) is unknown."
                 );
             }
 
-            if ($mode !== "live" && $mode !== "test") {
+            if (!in_array($mode, Mode::values())) {
                 $this->isError = true;
                 throw new Exception(
-                    "The mode you specified (" .
-                        $mode .
-                        ") is unknown. You should use `live` or `test`."
+                    "The mode you specified ($mode) is unknown. You should use `live` or `test`."
                 );
             }
 
             $localParams = [
-                "key" => $configClass->getKey(),
                 "ip" => $ip,
                 "lang" => $lang,
                 "params" => $tempParams,
@@ -118,11 +93,14 @@ class GeoIP extends Exception
             curl_setopt(
                 $ch,
                 CURLOPT_URL,
-                $this->APIEndpoint .
-                    "IPLookup?" .
-                    http_build_query($localParams)
+                $this->BaseURL . "/IPLookup?" . http_build_query($localParams)
             );
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                "Content-Type: application/json",
+                "Accept: application/json",
+                "Authorization: Bearer " . $configClass->getToken(),
+            ]);
             $APIResponse = curl_exec($ch);
             curl_close($ch);
             $decodedResponse = json_decode($APIResponse, true);
@@ -139,7 +117,7 @@ class GeoIP extends Exception
         } else {
             $this->isError = true;
             throw new Exception(
-                'The $ip parameter is required. You passed an empty value.'
+                'The `$ip` parameter is required. You passed an empty value.'
             );
         }
     }
@@ -147,60 +125,54 @@ class GeoIP extends Exception
     /**
      * Country Lookup Method
      *
-     * @param string $countryCode The ISO 3166-1 alpha-2 code format of the country. [Learn More](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)
-     * @param array $params You can pass the modules you want to fetch for that $ip. This array accepts `location`, `security`, `timezone`, `currency` and/or `device`.
+     * @param string $countryCode The ٫ISO 3166-1 alpha-2٫ code format of the country. [Learn More](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)
+     * @param array $params The `params` argument is used to determine the data you need in the response.
      * @param string $lang Sets the output language. It can be `EN`, `AR`, `DE`, `FR`, `ES`, `JA`, `ZH` or `RU`.
-     * @param string $mode You pass `test` to this variable, so your account plan will not be affected while integrating the library and the API will return fake information for this case. You can set it to `live` again to back to the `production` mode.
-     * @see https://docs.greip.io/methods/country-data-api
+     * @param string $mode The mode command is used to in the development stage to simulate the integration process before releasing it to the production environment.
+     * @see https://docs.greip.io/api-reference/endpoint/other-services/country-data
      *
      * @return array The country information
      */
     public function country(
         $countryCode,
         $params = [],
-        $lang = "EN",
-        $mode = "live"
+        $lang = Language::EN,
+        $mode = Mode::LIVE
     ): array {
+        $countryCode = strtoupper($countryCode);
+        $mode = strtolower($mode);
+        $lang = strtoupper($lang);
+
         $configClass = new Config();
 
         if (!empty($countryCode)) {
-            $tempParams = "";
+            $tempParams = [];
             foreach ($params as $perParam) {
                 if (!empty($perParam)) {
-                    if (!in_array($perParam, $this->AvailableCountryParams)) {
-                        $this->isError = true;
+                    if (!in_array($perParam, Param::values())) {
                         throw new Exception(
-                            'The $params variable is not valid. You passed `' .
-                                $perParam .
-                                "` which is unknown."
+                            "The `$perParam` param is not valid for the `\$params` argument."
                         );
                     } else {
-                        $tempParams .= $perParam . ",";
+                        array_push($tempParams, $perParam);
                     }
                 }
             }
-            if (!empty($tempParams)) {
-                $tempParams = substr($tempParams, 0, -1);
-            }
+            $tempParams = implode(",", $tempParams);
 
-            if (!in_array($lang, $this->AvailableLanguages)) {
-                $this->isError = true;
+            if (!in_array($lang, Language::values())) {
                 throw new Exception(
-                    "The language you specified (" . $lang . ") is unknown."
+                    "The language you specified ($lang) is unknown."
                 );
             }
 
-            if ($mode !== "live" && $mode !== "test") {
-                $this->isError = true;
+            if (!in_array($mode, Mode::values())) {
                 throw new Exception(
-                    "The mode you specified (" .
-                        $mode .
-                        ") is unknown. You should use `live` or `test`."
+                    "The mode you specified ($mode) is unknown. You should use `live` or `test`."
                 );
             }
 
             $localParams = [
-                "key" => $configClass->getKey(),
                 "CountryCode" => $countryCode,
                 "params" => $tempParams,
                 "lang" => $lang,
@@ -211,9 +183,14 @@ class GeoIP extends Exception
             curl_setopt(
                 $ch,
                 CURLOPT_URL,
-                $this->APIEndpoint . "Country?" . http_build_query($localParams)
+                $this->BaseURL . "/Country?" . http_build_query($localParams)
             );
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                "Content-Type: application/json",
+                "Accept: application/json",
+                "Authorization: Bearer " . $configClass->getToken(),
+            ]);
             $APIResponse = curl_exec($ch);
             curl_close($ch);
             $decodedResponse = json_decode($APIResponse, true);
@@ -228,9 +205,8 @@ class GeoIP extends Exception
 
             return $decodedResponse;
         } else {
-            $this->isError = true;
             throw new Exception(
-                'The $countryCode parameter is required. You passed an empty value.'
+                'The `$countryCode` parameter is required. You passed an empty value.'
             );
         }
     }
@@ -241,12 +217,15 @@ class GeoIP extends Exception
      * @param string $asn The AS Number you want to lookup.
      * @param boolean $isList Set this to `true` if you want to the API to return all IPv4 & IPv6 routes.
      * @param string $mode You pass `test` to this variable, so your account plan will not be affected while integrating the library and the API will return fake information for this case. You can set it to `live` again to back to the `production` mode.
-     * @see https://docs.greip.io/methods/asn-lookup-api
+     * @see https://docs.greip.io/api-reference/endpoint/ip-geolocation/asn-lookup
      *
      * @return array The ASN Data
      */
-    public function asn($asn, $isList = false, $mode = "live"): array
+    public function asn($asn, $isList = false, $mode = Mode::LIVE): array
     {
+        $asn = strtoupper($asn);
+        $mode = strtolower($mode);
+
         $configClass = new Config();
 
         if (!empty($asn)) {
@@ -254,17 +233,13 @@ class GeoIP extends Exception
                 $isList = false;
             }
 
-            if ($mode !== "live" && $mode !== "test") {
-                $this->isError = true;
+            if (!in_array($mode, Mode::values())) {
                 throw new Exception(
-                    "The mode you specified (" .
-                        $mode .
-                        ") is unknown. You should use `live` or `test`."
+                    "The mode you specified ($mode) is unknown. You should use `live` or `test`."
                 );
             }
 
             $localParams = [
-                "key" => $configClass->getKey(),
                 "asn" => $asn,
                 "isList" => $isList ? "yes" : "no",
                 "mode" => $mode,
@@ -274,11 +249,14 @@ class GeoIP extends Exception
             curl_setopt(
                 $ch,
                 CURLOPT_URL,
-                $this->APIEndpoint .
-                    "ASNLookup?" .
-                    http_build_query($localParams)
+                $this->BaseURL . "/ASNLookup?" . http_build_query($localParams)
             );
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                "Content-Type: application/json",
+                "Accept: application/json",
+                "Authorization: Bearer " . $configClass->getToken(),
+            ]);
             $APIResponse = curl_exec($ch);
             curl_close($ch);
             $decodedResponse = json_decode($APIResponse, true);
@@ -295,7 +273,7 @@ class GeoIP extends Exception
         } else {
             $this->isError = true;
             throw new Exception(
-                'The $asn parameter is required. You passed an empty value.'
+                'The `$asn` parameter is required. You passed an empty value.'
             );
         }
     }
