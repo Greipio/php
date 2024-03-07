@@ -4,7 +4,7 @@ The official PHP library for Greip API
 
 [Report Issue](https://github.com/Greipio/php/issues/new)
 ·
-[Request Feature](https://github.com/Greipio/php/discussions)
+[Request Feature](https://github.com/Greipio/php/discussions/new?category=ideas)
 ·
 [Greip Website](https://greip.io/)
 ·
@@ -211,7 +211,3 @@ You can find the full guide of this package by visiting our [Documentation Page]
 
 - [Greip Team](https://greip.io/)
 - [All Contributors](https://github.com/Greipio/php/graphs/contributors)
-
-## License
-
-The MIT License (MIT). Please read the [License](https://github.com/Greipio/php/blob/master/LICENSE) file for more information.
