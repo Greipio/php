@@ -19,7 +19,7 @@ The official PHP library for Greip API
 &nbsp;&nbsp;
 ![API Status](https://img.shields.io/website?down_color=orange&down_message=down&label=API%20status&up_color=brightgreen&up_message=up&url=https%3A%2F%2Fgregeoip.com)
 &nbsp;&nbsp;
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/license/apache-2-0)
 &nbsp;&nbsp;
 ![Packagist PHP Version Support](https://img.shields.io/packagist/php-v/gre/geoip?color=blue)
 
@@ -37,6 +37,8 @@ Here's how you use the library:
 <br />
 
 ### 1. IP Geolocation
+
+Use this method to retrieve the information of a given IP address.
 
 ```php
 include_once __DIR__ . "/vendor/autoload.php";
@@ -57,6 +59,8 @@ print_r($GeoIP_Response);
 
 ### 2. ASN Lookup
 
+In this method, Greip will help you lookup any given AS Number and returning all data related to it, like: name, org (the organization name), country, domain, email, phone, totalIPs, list of all routes (v4 & v6) related the given AS Number, etc.
+
 ```php
 include_once __DIR__ . "/vendor/autoload.php";
 
@@ -75,6 +79,8 @@ print_r($ASN_Response);
 ```
 
 ### 3. Country Lookup
+
+This method can help you retrieve information of the given country.
 
 ```php
 include_once __DIR__ . "/vendor/autoload.php";
@@ -95,6 +101,10 @@ print_r($Country_Response);
 
 ### 4. Email Validation
 
+This method provides an additional layer of validation for your system. While validating email syntax is important, it is not sufficient.
+
+This method goes beyond syntax validation by checking the domain’s validity, the availability of the Mail Service, detecting Disposable Email (Temporary Emails), etc. By utilising this method, you can ensure a more thorough validation process for email addresses.
+
 ```php
 include_once __DIR__ . "/vendor/autoload.php";
 
@@ -113,6 +123,8 @@ print_r($Email_Response);
 ```
 
 ### 5. Phone Validation
+
+This method can be used as an extra-layer of your system for validating phone numbers. It validates phone number syntax and valid-possibility.
 
 ```php
 include_once __DIR__ . "/vendor/autoload.php";
@@ -133,6 +145,8 @@ print_r($Phone_Response);
 
 ### 6. Profanity Detection
 
+This method can be used to detect abuse of your website/app. It’s a great way to know more about your user inputs and whether they contain profanity (bad words) or not before releasing them to the public.
+
 ```php
 include_once __DIR__ . "/vendor/autoload.php";
 
@@ -151,6 +165,8 @@ print_r($Profanity_Response);
 ```
 
 ### 7. Payment Fraud Prevention
+
+Prevent financial losses by deploying AI-Powered modules.
 
 ```php
 include_once __DIR__ . "/vendor/autoload.php";
@@ -185,6 +201,8 @@ print_r($Payment_Response);
 ```
 
 ### 8. IBAN Validation
+
+This method allows you to validate International Bank Account Numbers (IBANs) and retrieve additional information about the country associated with the IBAN.
 
 ```php
 include_once __DIR__ . "/vendor/autoload.php";
