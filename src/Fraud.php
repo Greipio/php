@@ -24,7 +24,7 @@ class Fraud extends Exception
      * @var string $BaseURL Greip's base URL.
      * @var string $isError Can be used AFTER MAKING A REQUEST to determine if the API returned an error.
      */
-    private $BaseURL = "https://gregeoip.com/";
+    private $BaseURL = "https://greipapi.com/";
     public $isError = false;
 
     /**

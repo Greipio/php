@@ -26,7 +26,7 @@ class GeoIP extends Exception
      * @var string $BaseURL Greip's base URL.
      * @var string $isError Can be used AFTER MAKING A REQUEST to determine if the API returned an error.
      */
-    private $BaseURL = "https://gregeoip.com/";
+    private $BaseURL = "https://greipapi.com/";
     public $isError = false;
 
     /**
@@ -94,6 +94,68 @@ class GeoIP extends Exception
                 $ch,
                 CURLOPT_URL,
                 $this->BaseURL . "/IPLookup?" . http_build_query($localParams)
+            );
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                "Content-Type: application/json",
+                "Accept: application/json",
+                "Authorization: Bearer " . $configClass->getToken(),
+            ]);
+            $APIResponse = curl_exec($ch);
+            curl_close($ch);
+            $decodedResponse = json_decode($APIResponse, true);
+
+            if (
+                is_array($decodedResponse) &&
+                in_array("status", array_keys($decodedResponse)) &&
+                $decodedResponse["status"] !== "success"
+            ) {
+                $this->isError = true;
+            }
+
+            return $decodedResponse;
+        } else {
+            $this->isError = true;
+            throw new Exception(
+                'The `$ip` parameter is required. You passed an empty value.'
+            );
+        }
+    }
+
+    /**
+     * IP Threats Method
+     *
+     * @param string $ip The IP Address you want to retrieve it’s threat intelligence information
+     * @param string $mode You pass `test` to this variable, so your account plan will not be affected while integrating the library and the API will return fake information for this case. You can set it to `live` again to back to the `production` mode.
+     * @see https://docs.greip.io/api-reference/endpoint/ip-geolocation/ip-lookup
+     *
+     * @return array The $ip threats intelligence information
+     */
+    public function threats($ip, $mode = Mode::LIVE): array
+    {
+        $ip = strtoupper($ip);
+        $mode = strtolower($mode);
+
+        $configClass = new Config();
+
+        if (!empty($ip)) {
+            if (!in_array($mode, Mode::values())) {
+                $this->isError = true;
+                throw new Exception(
+                    "The mode you specified ($mode) is unknown. You should use `live` or `test`."
+                );
+            }
+
+            $localParams = [
+                "ip" => $ip,
+                "mode" => $mode,
+                "source" => "PHP-SDK",
+            ];
+            $ch = curl_init();
+            curl_setopt(
+                $ch,
+                CURLOPT_URL,
+                $this->BaseURL . "/threats?" . http_build_query($localParams)
             );
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_HTTPHEADER, [

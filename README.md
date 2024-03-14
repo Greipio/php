@@ -17,7 +17,7 @@ The official PHP library for Greip API
 &nbsp;&nbsp;
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/Greipio/php?color=brightgreen&label=Size&logo=packagist&logoColor=white)
 &nbsp;&nbsp;
-![API Status](https://img.shields.io/website?down_color=orange&down_message=down&label=API%20status&up_color=brightgreen&up_message=up&url=https%3A%2F%2Fgregeoip.com)
+![API Status](https://img.shields.io/website?down_color=orange&down_message=down&label=API%20status&up_color=brightgreen&up_message=up&url=https%3A%2F%greipapi.com)
 &nbsp;&nbsp;
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/license/apache-2-0)
 &nbsp;&nbsp;
@@ -57,7 +57,28 @@ $GeoIP_Response = $GeoIP->lookup("1.1.1.1");
 print_r($GeoIP_Response);
 ```
 
-### 2. ASN Lookup
+### 2. IP Threats
+
+Use this method to retrieve threat intelligence information associated with a given IP address.
+
+```php
+include_once __DIR__ . "/vendor/autoload.php";
+
+// Declaring the classes we need
+$config = new Greip\API\Config();
+$GeoIP = new Greip\API\GeoIP();
+
+// Setting the API Key
+$config->setToken("<API-Key>");
+
+// Sending the request and storing the output in a variable
+$GeoIP_Response = $GeoIP->threats("1.1.1.1");
+
+// Printing the response
+print_r($GeoIP_Response);
+```
+
+### 3. ASN Lookup
 
 In this method, Greip will help you lookup any given AS Number and returning all data related to it, like: name, org (the organization name), country, domain, email, phone, totalIPs, list of all routes (v4 & v6) related the given AS Number, etc.
 
@@ -78,7 +99,7 @@ $ASN_Response = $GeoIP->asn("AS01");
 print_r($ASN_Response);
 ```
 
-### 3. Country Lookup
+### 4. Country Lookup
 
 This method can help you retrieve information of the given country.
 
@@ -99,7 +120,7 @@ $Country_Response = $GeoIP->country("US", ["language", "timezone", "currency"]);
 print_r($Country_Response);
 ```
 
-### 4. Email Validation
+### 5. Email Validation
 
 This method provides an additional layer of validation for your system. While validating email syntax is important, it is not sufficient.
 
@@ -122,7 +143,7 @@ $Email_Response = $Fraud->email("example@domain.com");
 print_r($Email_Response);
 ```
 
-### 5. Phone Validation
+### 6. Phone Validation
 
 This method can be used as an extra-layer of your system for validating phone numbers. It validates phone number syntax and valid-possibility.
 
@@ -143,7 +164,7 @@ $Phone_Response = $Fraud->phone("000000000", "US");
 print_r($Phone_Response);
 ```
 
-### 6. Profanity Detection
+### 7. Profanity Detection
 
 This method can be used to detect abuse of your website/app. It’s a great way to know more about your user inputs and whether they contain profanity (bad words) or not before releasing them to the public.
 
@@ -164,7 +185,7 @@ $Profanity_Response = $Fraud->profanity("This is a sample text", true, false);
 print_r($Profanity_Response);
 ```
 
-### 7. Payment Fraud Prevention
+### 8. Payment Fraud Prevention
 
 Prevent financial losses by deploying AI-Powered modules.
 
@@ -200,7 +221,7 @@ $Payment_Response = $Fraud->payment($data);
 print_r($Payment_Response);
 ```
 
-### 8. IBAN Validation
+### 9. IBAN Validation
 
 This method allows you to validate International Bank Account Numbers (IBANs) and retrieve additional information about the country associated with the IBAN.
 
