@@ -250,3 +250,7 @@ You can find the full guide of this package by visiting our [Documentation Page]
 
 - [Greip Team](https://greip.io/)
 - [All Contributors](https://github.com/Greipio/php/graphs/contributors)
+
+## Repo Activity
+
+![Alt](https://repobeats.axiom.co/api/embed/a014ed632586808b95675b0dfc7a7045ad1ac1fc.svg "Repobeats analytics image")
