@@ -28,8 +28,16 @@ The official PHP library for Greip API
 ## Installation
 
 ```
-composer require gre/geoip
+composer require gre/geoip:^3.0
 ```
+
+## Greip API v2 (`gre/geoip` 3.x)
+
+This major release targets **[Greip API v2](https://v2.greipapi.com)**. See [CHANGELOG.md](./CHANGELOG.md).
+
+- Set your API key with `Config::setToken()` (requests use **Bearer** authorization).
+- Methods return the API **`data`** array with v2 field names (`ip`, `geo`, `is_valid`, `risk_level`, etc.).
+- Profanity and payment fraud use the v2 **POST** endpoints where required.
 
 ## Usage
 
@@ -53,7 +61,7 @@ $config->setToken("<API-Key>");
 // Sending the request and storing the output in a variable
 $GeoIP_Response = $GeoIP->lookup("1.1.1.1");
 
-// Printing the response
+// v2 example fields: $GeoIP_Response['ip']['address'], $GeoIP_Response['geo']['country_code']
 print_r($GeoIP_Response);
 ```
 
@@ -93,7 +101,7 @@ $GeoIP = new Greip\API\GeoIP();
 $config->setToken("<API-Key>");
 
 // Sending the request and storing the output in a variable
-$ASN_Response = $GeoIP->asn("AS01");
+$ASN_Response = $GeoIP->asn("AS13335");
 
 // Printing the response
 print_r($ASN_Response);
