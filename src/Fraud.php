@@ -24,7 +24,7 @@ class Fraud extends Exception
      * @var string $BaseURL Greip's base URL.
      * @var string $isError Can be used AFTER MAKING A REQUEST to determine if the API returned an error.
      */
-    private $BaseURL = "https://greipapi.com/";
+    private $BaseURL = "https://v2.greipapi.com/";
     public $isError = false;
 
     /**
@@ -55,8 +55,7 @@ class Fraud extends Exception
             }
 
             $localParams = [
-                "email" => $email,
-                "userID" => $userID,
+                "user_id" => $userID,
                 "mode" => $mode,
                 "source" => "PHP-SDK",
             ];
@@ -65,8 +64,10 @@ class Fraud extends Exception
                 $ch,
                 CURLOPT_URL,
                 $this->BaseURL .
-                    "/validateEmail?" .
-                    http_build_query($localParams)
+                    "score/email/" .
+                    rawurlencode($email) .
+                    "?" .
+                    http_build_query(array_filter($localParams))
             );
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_HTTPHEADER, [
@@ -80,8 +81,8 @@ class Fraud extends Exception
 
             if (
                 is_array($decodedResponse) &&
-                in_array("status", array_keys($decodedResponse)) &&
-                $decodedResponse["status"] !== "success"
+                array_key_exists("success", $decodedResponse) &&
+                $decodedResponse["success"] !== true
             ) {
                 $this->isError = true;
             }
@@ -125,9 +126,8 @@ class Fraud extends Exception
             }
 
             $localParams = [
-                "phone" => $phone,
-                "countryCode" => $countryCode,
-                "userID" => $userID,
+                "country_code" => $countryCode,
+                "user_id" => $userID,
                 "mode" => $mode,
                 "source" => "PHP-SDK",
             ];
@@ -136,8 +136,10 @@ class Fraud extends Exception
                 $ch,
                 CURLOPT_URL,
                 $this->BaseURL .
-                    "/validatePhone?" .
-                    http_build_query($localParams)
+                    "score/phone/" .
+                    rawurlencode($phone) .
+                    "?" .
+                    http_build_query(array_filter($localParams))
             );
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_HTTPHEADER, [
@@ -151,8 +153,8 @@ class Fraud extends Exception
 
             if (
                 is_array($decodedResponse) &&
-                in_array("status", array_keys($decodedResponse)) &&
-                $decodedResponse["status"] !== "success"
+                array_key_exists("success", $decodedResponse) &&
+                $decodedResponse["success"] !== true
             ) {
                 $this->isError = true;
             }
@@ -190,8 +192,7 @@ class Fraud extends Exception
             }
 
             $localParams = [
-                "iban" => $iban,
-                "userID" => $userID,
+                "user_id" => $userID,
                 "mode" => $mode,
                 "source" => "PHP-SDK",
             ];
@@ -200,8 +201,10 @@ class Fraud extends Exception
                 $ch,
                 CURLOPT_URL,
                 $this->BaseURL .
-                    "/validateIBAN?" .
-                    http_build_query($localParams)
+                    "lookup/iban/" .
+                    rawurlencode($iban) .
+                    "?" .
+                    http_build_query(array_filter($localParams))
             );
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_HTTPHEADER, [
@@ -215,8 +218,8 @@ class Fraud extends Exception
 
             if (
                 is_array($decodedResponse) &&
-                in_array("status", array_keys($decodedResponse)) &&
-                $decodedResponse["status"] !== "success"
+                array_key_exists("success", $decodedResponse) &&
+                $decodedResponse["success"] !== true
             ) {
                 $this->isError = true;
             }
@@ -268,19 +271,19 @@ class Fraud extends Exception
 
             $localParams = [
                 "text" => $text,
-                "listBadWords" => $listBadWords ? "yes" : "no",
-                "scoreOnly" => $scoreOnly ? "yes" : "no",
-                "userID" => $userID,
+                "user_id" => $userID,
                 "mode" => $mode,
                 "source" => "PHP-SDK",
             ];
             $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $this->BaseURL . "score/text");
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
             curl_setopt(
                 $ch,
-                CURLOPT_URL,
-                $this->BaseURL . "/badWords?" . http_build_query($localParams)
+                CURLOPT_POSTFIELDS,
+                json_encode(array_filter($localParams), true)
             );
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_HTTPHEADER, [
                 "Content-Type: application/json",
                 "Accept: application/json",
@@ -292,8 +295,8 @@ class Fraud extends Exception
 
             if (
                 is_array($decodedResponse) &&
-                in_array("status", array_keys($decodedResponse)) &&
-                $decodedResponse["status"] !== "success"
+                array_key_exists("success", $decodedResponse) &&
+                $decodedResponse["success"] !== true
             ) {
                 $this->isError = true;
             }
@@ -334,7 +337,7 @@ class Fraud extends Exception
                 "data" => $data,
             ];
             $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $this->BaseURL . "/paymentFraud");
+            curl_setopt($ch, CURLOPT_URL, $this->BaseURL . "score/payments");
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
             curl_setopt(
@@ -353,8 +356,8 @@ class Fraud extends Exception
 
             if (
                 is_array($decodedResponse) &&
-                in_array("status", array_keys($decodedResponse)) &&
-                $decodedResponse["status"] !== "success"
+                array_key_exists("success", $decodedResponse) &&
+                $decodedResponse["success"] !== true
             ) {
                 $this->isError = true;
             }

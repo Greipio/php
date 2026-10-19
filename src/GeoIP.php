@@ -26,7 +26,7 @@ class GeoIP extends Exception
      * @var string $BaseURL Greip's base URL.
      * @var string $isError Can be used AFTER MAKING A REQUEST to determine if the API returned an error.
      */
-    private $BaseURL = "https://greipapi.com/";
+    private $BaseURL = "https://v2.greipapi.com/";
     public $isError = false;
 
     /**
@@ -83,7 +83,6 @@ class GeoIP extends Exception
             }
 
             $localParams = [
-                "ip" => $ip,
                 "lang" => $lang,
                 "params" => $tempParams,
                 "mode" => $mode,
@@ -93,7 +92,11 @@ class GeoIP extends Exception
             curl_setopt(
                 $ch,
                 CURLOPT_URL,
-                $this->BaseURL . "/IPLookup?" . http_build_query($localParams)
+                $this->BaseURL .
+                    "lookup/ip/" .
+                    rawurlencode($ip) .
+                    "?" .
+                    http_build_query($localParams)
             );
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_HTTPHEADER, [
@@ -107,8 +110,8 @@ class GeoIP extends Exception
 
             if (
                 is_array($decodedResponse) &&
-                in_array("status", array_keys($decodedResponse)) &&
-                $decodedResponse["status"] !== "success"
+                array_key_exists("success", $decodedResponse) &&
+                $decodedResponse["success"] !== true
             ) {
                 $this->isError = true;
             }
@@ -147,7 +150,6 @@ class GeoIP extends Exception
             }
 
             $localParams = [
-                "ip" => $ip,
                 "mode" => $mode,
                 "source" => "PHP-SDK",
             ];
@@ -155,7 +157,11 @@ class GeoIP extends Exception
             curl_setopt(
                 $ch,
                 CURLOPT_URL,
-                $this->BaseURL . "/threats?" . http_build_query($localParams)
+                $this->BaseURL .
+                    "score/ip/" .
+                    rawurlencode($ip) .
+                    "?" .
+                    http_build_query($localParams)
             );
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_HTTPHEADER, [
@@ -169,8 +175,8 @@ class GeoIP extends Exception
 
             if (
                 is_array($decodedResponse) &&
-                in_array("status", array_keys($decodedResponse)) &&
-                $decodedResponse["status"] !== "success"
+                array_key_exists("success", $decodedResponse) &&
+                $decodedResponse["success"] !== true
             ) {
                 $this->isError = true;
             }
@@ -235,7 +241,6 @@ class GeoIP extends Exception
             }
 
             $localParams = [
-                "CountryCode" => $countryCode,
                 "params" => $tempParams,
                 "lang" => $lang,
                 "mode" => $mode,
@@ -245,7 +250,11 @@ class GeoIP extends Exception
             curl_setopt(
                 $ch,
                 CURLOPT_URL,
-                $this->BaseURL . "/Country?" . http_build_query($localParams)
+                $this->BaseURL .
+                    "lookup/countries/" .
+                    rawurlencode($countryCode) .
+                    "?" .
+                    http_build_query($localParams)
             );
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_HTTPHEADER, [
@@ -259,8 +268,8 @@ class GeoIP extends Exception
 
             if (
                 is_array($decodedResponse) &&
-                in_array("status", array_keys($decodedResponse)) &&
-                $decodedResponse["status"] !== "success"
+                array_key_exists("success", $decodedResponse) &&
+                $decodedResponse["success"] !== true
             ) {
                 $this->isError = true;
             }
@@ -302,8 +311,6 @@ class GeoIP extends Exception
             }
 
             $localParams = [
-                "asn" => $asn,
-                "isList" => $isList ? "yes" : "no",
                 "mode" => $mode,
                 "source" => "PHP-SDK",
             ];
@@ -311,7 +318,11 @@ class GeoIP extends Exception
             curl_setopt(
                 $ch,
                 CURLOPT_URL,
-                $this->BaseURL . "/ASNLookup?" . http_build_query($localParams)
+                $this->BaseURL .
+                    "lookup/asn/" .
+                    rawurlencode($asn) .
+                    "?" .
+                    http_build_query($localParams)
             );
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_HTTPHEADER, [
@@ -325,8 +336,8 @@ class GeoIP extends Exception
 
             if (
                 is_array($decodedResponse) &&
-                in_array("status", array_keys($decodedResponse)) &&
-                $decodedResponse["status"] !== "success"
+                array_key_exists("success", $decodedResponse) &&
+                $decodedResponse["success"] !== true
             ) {
                 $this->isError = true;
             }
